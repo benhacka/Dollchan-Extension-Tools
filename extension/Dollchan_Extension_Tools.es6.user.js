@@ -17032,15 +17032,10 @@ function getImageBoard(checkDomains, checkEngines) {
 		}
 		fixHTML(data, isForm) {
 			const formEl = super.fixHTML(data, isForm);
-			const links = $Q('.expand_image', formEl);
-			for(let i = 0, len = links.length; i < len; ++i) {
-				const link = links[i];
-				const href = link.getAttribute('onclick').match(/(?:https?:\/|\/storage)[^']+/);
-				if(href) {
-					link.href = href[0];
-					link.removeAttribute('onclick');
-				}
-			}
+			$Q('.expand_image', formEl).forEach((link) => {
+                		link.href = ((link.getAttribute('onclick') || '').split(',')[1] || '#').replace(/['"]+/g, '')
+                		link.removeAttribute('onclick');
+            		})
 			return formEl;
 		}
 		getImgInfo(wrap) {
